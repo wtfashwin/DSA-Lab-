@@ -1,3 +1,7 @@
+Represent a graph of city using adj matrix list. Nodes should represent the various
+landmarks and links should represent te distance between them. Find shortest 
+path using dijkstra's algo from single source to all desti. 
+
 #include<iostream>
 using namespace std;
 #include<limits.h>
