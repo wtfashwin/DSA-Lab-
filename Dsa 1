@@ -1,0 +1,181 @@
+Aim: Searching and sorting 
+
+#include<iostream>
+#include<string.h>
+using namespace std;
+int const size=3;
+
+struct student 
+{
+	int rollno;
+	char stdname[20];
+	float SGPA;
+};
+void accept(struct student list[size]);
+void display(struct student list[80]);
+void displayTop(struct student list[80]);
+void bubbleSort(struct student list[80]);
+void insertionSort(struct student list[80]);
+void quickSort(struct student list[80],int first,int last);
+void linearSearch(struct student list[80]);
+void binarySearch(struct student list[80]);
+
+int main() {
+	int ch,i;
+	
+  struct student data[20];
+	accept(data);
+	cout<<"1)Bubble sort\n";
+	cout<<"2)Insertion sort\n";
+	cout<<"3)Quick sort\n";
+	cout<<"4)Linear search\n";
+	cout<<"5)Binary search\n";
+	cout<<"Enter your choice :";
+	cin>>ch;
+  
+  
+	switch(ch) {
+		case 1:
+			bubbleSort(data);
+			display(data);
+			break;
+		case 2:
+			insertionSort(data);
+			display(data);
+			break;
+		case 3:
+			quickSort(data,0,size-1);
+			displayTop(data);
+			break;
+		case 4:
+			linearSearch(data);
+			break;
+		case 5:
+			binarySearch(data);
+			break;
+		default:
+			cout<<"Invalid choice";
+	}
+}
+void accept(struct student list[size]) {
+	int i;
+	for(i=0;i<size;i++) {
+		cout<<"Enter rollno, name and SGPA :";
+		cin>>list[i].rollno>>list[i].stdname>>list[i].SGPA;
+	}
+}
+void display(struct student list[80])
+{
+	int i;
+	cout<<"Rollno\nName\nSGPA";
+  
+	for(i=0;i<size;i++) 
+  {
+		cout<<"\n"<<list[i].rollno<<"\t"<<list[i].stdname<<"\t"<<list[i].SGPA;
+	}
+}
+void displayTop(struct student list[80]) 
+{
+	int i;
+	cout<<"Rollno\nName\nSGPA";
+	for(i=0;i<10;i++) {
+		cout<<"\n"<<list[i].rollno<<"\t"<<list[i].stdname<<"\t"<<list[i].SGPA;
+	}
+}
+void bubbleSort(struct student list[80]) 
+{
+	int i,j;
+	struct student temp;
+	for(i=0;i<size;i++) 
+  {
+		for(j=0;j<(size-1-i);j++) 
+    {
+			if(list[j].rollno>list[j+1].rollno) 
+      {
+				temp=list[j];
+				list[j]=list[j+1];
+				list[j+1]=temp;
+			}
+		}
+	}
+}
+void insertionSort(struct student list[80]) 
+{
+	int k,j;
+	struct student temp;
+	for(k=1;k<size;k++) 
+  {
+		temp=list[k];
+		j=k-1;
+		while(strcmp(list[j].stdname,temp.stdname)>0&&j>=0) 
+    {
+			list[j+1]=list[j];
+			--j;
+		}
+		list[j+1]=temp;
+	}
+}
+void quickSort(struct student list[size],int first,int last) {
+	int pivot,i,j;
+	struct student temp;
+	if(first<last) {
+		pivot=first;
+		i=first;
+		j=last;
+		while(i<j) {
+			while(list[i].SGPA>=list[pivot].SGPA && i<last)
+			i++;
+			while(list[j].SGPA<list[pivot].SGPA)
+			j--;
+			if(i<j) {
+				temp=list[i];
+				list[i]=list[j];
+				list[j]=temp;
+			}
+		}
+		temp=list[pivot];
+		list[pivot]=list[j];
+		list[j]=temp;
+		quickSort(list,first,j-1);
+		quickSort(list,j+1,last);
+	}
+}
+void linearSearch(struct student list[size]) {
+	float SGPA;
+	int i;
+	cout<<"Enter SGPA :";
+	cin>>SGPA;
+	cout<<"\nRollno\nName\nSGPA\n";
+	for(i=0;i<size;i++) {
+		if(SGPA=list[i].SGPA)
+		cout<<"\n"<<list[i].rollno<<"\t"<<list[i].stdname;
+		else {
+			cout<<"Element not in list!";
+		}
+	}
+}
+
+
+void binarySearch(struct student list[size]) 
+{
+	int lower,mid,upper;
+	char search[80];
+	cout<<"Enter the name of student you want to search :\n";
+	cin>>search;
+	lower=0;
+	upper=size-1;
+	mid=(lower+upper)/2;
+	while(lower<=upper) {
+		if(strcmp(list[mid].stdname,search)<0)
+		lower=mid+1;
+		else if(strcmp(list[mid].stdname,search)==0) {
+		cout<<"\n"<<list[mid].rollno<<"\t"<<list[mid].stdname<<"\t"<<list[mid].SGPA;
+		break;
+	    }
+	    else
+	    upper=mid-1;
+	    mid=(lower+upper)/2;
+	}
+	if(lower>upper)
+	cout<<search<<" element not found in list";
+}
